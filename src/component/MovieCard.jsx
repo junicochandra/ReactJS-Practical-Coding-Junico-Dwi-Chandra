@@ -1,11 +1,29 @@
 import React from "react";
+import { toast } from "react-toastify";
+import { useFavorites } from "../context/FavoritesContext";
 
-const MovieCard = React.memo(function MovieCard({
-  movie,
-  isFavorite,
-  onAdd,
-  onRemove,
-}) {
+const MovieCard = React.memo(function MovieCard({ movie, isFavorite, onAdd }) {
+  const { removeFavorite, addFavorite } = useFavorites();
+  const handleRemove = (movie) => {
+    removeFavorite(movie.imdbID);
+
+    toast(
+      <div>
+        Removed <strong>{movie.Title}</strong>
+        <button
+          className="btn btn-link btn-sm ms-2"
+          onClick={() => {
+            addFavorite(movie);
+            toast.dismiss();
+          }}
+        >
+          Undo
+        </button>
+      </div>,
+      { autoClose: 5000 }
+    );
+  };
+
   return (
     <div className="col-sm-6 col-md-4 col-lg-3 mb-3">
       <div className="card h-100">
@@ -29,7 +47,7 @@ const MovieCard = React.memo(function MovieCard({
             <button
               aria-label="Remove from favorites"
               className="btn btn-outline-danger btn-sm"
-              onClick={() => onRemove(movie.imdbID)}
+              onClick={() => handleRemove(movie)}
             >
               Remove
             </button>
