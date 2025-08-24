@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import MovieCard from "./MovieCard";
+import FavoriteList from "./FavoriteList";
 
 function MovieSearch() {
   const [query, setQuery] = useState("");
@@ -63,6 +64,9 @@ function MovieSearch() {
         onChange={(e) => setQuery(e.target.value)}
       />
       <div className="row">{movieList}</div>
+
+      <h2 className="mt-5">Favorites</h2>
+      <FavoriteList />
     </div>
   );
 }

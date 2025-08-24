@@ -27,7 +27,6 @@ function FavoriteList() {
 
   return (
     <div>
-      <h1 className="mt-5">Favorites</h1>
       <div className="row mt-3">
         {favorites.length > 0 ? (
           favorites.map((movie) => (
