@@ -1,3 +1,5 @@
+import React from "react";
+
 const MovieCard = React.memo(function MovieCard({
   movie,
   isFavorite,
