@@ -18,7 +18,7 @@ function FavoriteList() {
                       : "https://via.placeholder.com/300x400"
                   }
                   className="card-img-top"
-                  alt={movie.Title}
+                  alt={`${movie.Title} (${movie.Year})`}
                 />
                 <div className="card-body">
                   <h2 className="card-title fs-6 fs-sm-5 fs-md-4 fs-lg-3">
@@ -26,6 +26,7 @@ function FavoriteList() {
                   </h2>
                   <p className="card-text">{movie.Year}</p>
                   <button
+                    aria-label="Remove from favorites"
                     className="btn btn-outline-danger btn-sm"
                     onClick={() => removeFavorite(movie.imdbID)}
                   >

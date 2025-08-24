@@ -6,6 +6,10 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <main role="main" className="container my-4">
+      <div className="row">
+        <App />
+      </div>
+    </main>
   </StrictMode>
 );

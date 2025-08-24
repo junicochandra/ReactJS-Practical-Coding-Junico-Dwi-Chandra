@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useFavorites } from "../context/FavoritesContext";
+import MovieCard from "./MovieCard";
 
 function MovieSearch() {
   const [query, setQuery] = useState("");
@@ -37,6 +38,20 @@ function MovieSearch() {
 
   const isFavorite = (id) => favorites.some((fav) => fav.imdbID === id);
 
+  const movieList = useMemo(
+    () =>
+      movies.map((movie) => (
+        <MovieCard
+          key={movie.imdbID}
+          movie={movie}
+          isFavorite={isFavorite(movie.imdbID)}
+          onAdd={addFavorite}
+          onRemove={removeFavorite}
+        />
+      )),
+    [movies, favorites, addFavorite, removeFavorite, isFavorite]
+  );
+
   return (
     <div>
       <input
@@ -47,45 +62,7 @@ function MovieSearch() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-
-      <div className="row">
-        {movies.map((movie) => (
-          <div key={movie.imdbID} className="col-md-3 mb-3">
-            <div className="card h-100">
-              <img
-                src={
-                  movie.Poster !== "N/A"
-                    ? movie.Poster
-                    : "https://via.placeholder.com/300x400"
-                }
-                className="card-img-top"
-                alt={movie.Title}
-              />
-              <div className="card-body">
-                <h2 className="card-title fs-6 fs-sm-5 fs-md-4 fs-lg-3">
-                  {movie.Title}
-                </h2>
-                <p className="card-text">{movie.Year}</p>
-                {isFavorite(movie.imdbID) ? (
-                  <button
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => removeFavorite(movie.imdbID)}
-                  >
-                    Remove
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-outline-success btn-sm"
-                    onClick={() => addFavorite(movie)}
-                  >
-                    + Add
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <div className="row">{movieList}</div>
     </div>
   );
 }
