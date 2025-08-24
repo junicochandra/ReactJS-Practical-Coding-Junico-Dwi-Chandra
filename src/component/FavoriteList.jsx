@@ -1,7 +1,29 @@
 import { useFavorites } from "../context/FavoritesContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function FavoriteList() {
-  const { favorites, removeFavorite } = useFavorites();
+  const { favorites, removeFavorite, addFavorite } = useFavorites();
+
+  const handleRemove = (movie) => {
+    removeFavorite(movie.imdbID);
+
+    toast(
+      <div>
+        Removed <strong>{movie.Title}</strong>
+        <button
+          className="btn btn-link btn-sm ms-2"
+          onClick={() => {
+            addFavorite(movie);
+            toast.dismiss();
+          }}
+        >
+          Undo
+        </button>
+      </div>,
+      { autoClose: 5000 }
+    );
+  };
 
   return (
     <div>
@@ -19,6 +41,7 @@ function FavoriteList() {
                   }
                   className="card-img-top"
                   alt={`${movie.Title} (${movie.Year})`}
+                  loading="lazy"
                 />
                 <div className="card-body">
                   <h2 className="card-title fs-6 fs-sm-5 fs-md-4 fs-lg-3">
@@ -28,7 +51,7 @@ function FavoriteList() {
                   <button
                     aria-label="Remove from favorites"
                     className="btn btn-outline-danger btn-sm"
-                    onClick={() => removeFavorite(movie.imdbID)}
+                    onClick={() => handleRemove(movie)}
                   >
                     Remove
                   </button>
@@ -40,6 +63,7 @@ function FavoriteList() {
           <p className="text-muted">No favorites yet.</p>
         )}
       </div>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }

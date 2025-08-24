@@ -19,9 +19,14 @@ export const FavoritesProvider = ({ children }) => {
   }, [favorites]);
 
   const addFavorite = (movie) => {
-    if (!favorites.some((fav) => fav.imdbID === movie.imdbID)) {
-      setFavorites([...favorites, movie]);
-    }
+    if (!movie || !movie.imdbID) return;
+
+    setFavorites((prev) => {
+      if (prev.some((fav) => fav.imdbID === movie.imdbID)) {
+        return prev;
+      }
+      return [...prev, movie];
+    });
   };
 
   const removeFavorite = (imdbID) => {
